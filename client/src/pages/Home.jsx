@@ -17,6 +17,29 @@ export const Home = () => {
   const [allPosts, setAllPosts] = useState(null);
   const [searchText, setSearchText] = useState("as");
 
+  useEffect(() => {
+    const fetchPosts = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch("http://localhost:8080/api/v1/post", {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+        });
+        if (response.ok) {
+          const result = await response.json();
+          setAllPosts(result.data.reverse());
+        } else {
+          throw new Error(response.message);
+        }
+      } catch (error) {
+        console.log(error.message)
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchPosts();
+  }, []);
+
   return (
     <section>
       <div className="">
@@ -54,7 +77,7 @@ export const Home = () => {
           {searchText ? (
             <RenderCards data={[]} title="No search results found" />
           ) : (
-            <RenderCards data={[]} title="No posts found" />
+            <RenderCards data={allPosts} title="No posts found" />
           )}
         </div>
       </div>
