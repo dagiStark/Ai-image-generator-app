@@ -18,17 +18,61 @@ export const CreatePost = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = () => {};
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (form.prompt && form.photo) {
+      setLoading(true);
+      try {
+        const response = await fetch("http://localhost:8080/api/v1/post", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(form),
+        });
+
+        const data = await response.json();
+        console.log(data);
+
+      } catch (error) {
+        console.log(error.message);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      alert("enter a prompt and a photo");
+    }
+  };
 
   const handleSurpriseMe = () => {
     const randomPrompt = getRandomPrompt(form.prompt);
     setForm({ ...form, prompt: randomPrompt });
   };
 
-  const generateImage = () => {};
+  const generateImage = async () => {
+    if (form.prompt) {
+      try {
+        setGeneratingImg(true);
+        const response = await fetch("http://localhost:8080/api/v1/dalle", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ prompt: form.prompt }),
+        });
+
+        const data = await response.json();
+        console.log(data);
+        setForm({ ...form, photo: `data:image/jpeg;base64,${data.photo}` });
+      } catch (error) {
+        console.log(error.message);
+        alert(error.message)
+      } finally {
+        setGeneratingImg(false);
+      }
+    } else {
+      alert("enter a prompt");
+    }
+  };
 
   return (
-    <section className="separate max-w-7xl mx-auto ">
+    <section className=" max-w-7xl mx-auto ">
       <div>
         <h1 className="font-extrabold text-[#222328] text-[32px] "> Create</h1>
         <p className="mt-2 text-[#666e75] text-[16px] max-w-[500px]">
@@ -37,7 +81,7 @@ export const CreatePost = () => {
         </p>
       </div>
 
-      <form action="" className="blue-separate mt-16">
+      <form action="" className=" mt-16">
         <div>
           <FormField
             labelName="Your Name"
@@ -101,6 +145,7 @@ export const CreatePost = () => {
           <button
             type="submit"
             className="text-white bg-[#6469ff] font-medium rounded-md text-sm w-full sm:w-auto  px-5 py-2.5 text-center"
+            onClick={handleSubmit}
           >
             Share with the community
           </button>

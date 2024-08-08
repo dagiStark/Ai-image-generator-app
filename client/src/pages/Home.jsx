@@ -30,7 +30,7 @@ export const Home = () => {
         </p>
       </div>
 
-      <div className="separate mt-10">
+      <div className=" mt-10">
         <FormField />
       </div>
 
