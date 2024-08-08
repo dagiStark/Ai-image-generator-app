@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import { download } from "../assets";
 import { downloadImage } from "../utils";
 
-const Card = ({ _id, name, prompt, photo }) => (
+export const Card = ({ _id, name, prompt, photo }) => (
   <div className="rounded-xl group relative shadow-card hover:shadow-cardhover card">
     <img
       className="w-full h-auto object-cover rounded-xl"
@@ -35,7 +35,6 @@ const Card = ({ _id, name, prompt, photo }) => (
   </div>
 );
 
-export default Card;
 
 Card.propTypes = {
   _id: PropTypes.string.isRequired,
