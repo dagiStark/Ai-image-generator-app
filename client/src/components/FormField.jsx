@@ -7,8 +7,8 @@ export const FormField = ({
   placeholder,
   value,
   handleChange,
-  isSurpriseMe,
-  handleSurpriseMe,
+  isSurpriseMe = false,
+  handleSurpriseMe = () => {},
 }) => {
   return (
     <div className="mb-6">
@@ -57,8 +57,3 @@ FormField.propTypes = {
   handleSurpriseMe: PropTypes.func, // handleSurpriseMe should be a function and is optional
 };
 
-// Default props
-FormField.defaultProps = {
-  isSurpriseMe: false, // Default value for isSurpriseMe is false
-  handleSurpriseMe: () => {}, // Default value for handleSurpriseMe is an empty function
-};
